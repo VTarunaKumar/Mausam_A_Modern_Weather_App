@@ -5,6 +5,7 @@ const kTempTextStyle = TextStyle(
   fontSize: 100.0,
 );
 const kMessageTextStyle = TextStyle(
+  color: Colors.white60,
   fontSize: 60,
   fontFamily: 'Spartan MB',
 );

@@ -1,4 +1,21 @@
+import 'package:mausam/services/location.dart';
+import 'package:mausam/services/networking.dart';
+
+const apiKey = 'a2d0d4baff824cb271df8d6437b44e3b';
+const openWeatherUrl = 'https://api.openweathermap.org/data/2.5/weather';
+
 class WeatherModel {
+  Future<dynamic> getLoctionWeather() async {
+    Location location = Location();
+    await location.getCurrrentLocation();
+    // latitude = location.latitude;
+    // longitude = location.longitude;
+    NetworkHelper networkHelper = NetworkHelper(
+        '$openWeatherUrl?lat=${location.latitude}&lon=${location.longitude}&appid=$apiKey&units=metric');
+    var weatherData = await networkHelper.getData();
+    return weatherData;
+  }
+
   String getWeatherIcon(int condition) {
     if (condition < 300) {
       return '🌩';
