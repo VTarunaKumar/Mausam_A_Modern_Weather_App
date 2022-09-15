@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:mausam/services/location.dart';
+import 'package:mausam/services/networking.dart';
+
+const apiKey = 'a2d0d4baff824cb271df8d6437b44e3b';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({Key? key}) : super(key: key);
@@ -9,15 +11,22 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  getLocation() async {
+  late double latitude;
+  late double longitude;
+
+  void getLocationData() async {
     Location location = Location();
     await location.getCurrrentLocation();
+    latitude = location.latitude;
+    longitude = location.longitude;
+    NetworkHelper networkHelper = NetworkHelper(
+        'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey');
+    var weatherData = await networkHelper.getData();
   }
 
   @override
   void initState() {
     super.initState();
-    getLocation();
   }
 
   @override
@@ -26,7 +35,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
       body: Center(
         child: RaisedButton(
           onPressed: () {
-            getLocation();
+            getLocationData();
           },
           child: Text("Get Location"),
         ),
